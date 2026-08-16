@@ -14,6 +14,7 @@ In this project I'm going to develop an ABAP Cloud module built to handle work o
 - ZD_STATUS_LGO
 - ZD_TECHNICIAN_ID_LGO
 - ZD_WORK_ORDER_ID_LGO
+
 I created them in 18 minutes while I was learning Eclipse interface.
 
 ## Step 2: Data Elements
@@ -23,6 +24,7 @@ I created 5 data elements:
 - ZDE_STATUS_LGO
 - ZDE_TECHNICIAN_ID_LGO
 - ZDE_WORK_ORDER_ID_LGO
+
 I created them in 26 minutes, also learning about the Eclipse interface.
 
 ## Step 3: Transparent Tables
