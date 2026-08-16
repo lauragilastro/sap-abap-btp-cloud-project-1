@@ -31,6 +31,7 @@ Also I created the 4 transparent tables:
 - ZTTECHNICIAN_LGO
 - ZTWORK_HIST_LGO
 - ZTWORK_ORDER_LGO
+
 Two of them need foreign keys because customer_id and technician_id in the work order can only point to a customer or technician that exists in the corresponding table. In other words: only for registered IDs.
 I created them in 15 minutes approximately.
 
