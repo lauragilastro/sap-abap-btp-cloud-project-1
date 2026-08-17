@@ -44,6 +44,11 @@ CLASS zcl_work_order_validator_lgo DEFINITION
         RETURNING VALUE(rv_valid)  TYPE abap_bool
         RAISING   zcx_validation_lgo.
 
+    METHODS validate_delete_order
+        IMPORTING iv_work_order_id TYPE zde_work_order_id_lgo
+        RETURNING VALUE(rv_valid)  TYPE abap_bool
+        RAISING   zcx_validation_lgo.
+
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -139,5 +144,33 @@ CLASS zcl_work_order_validator_lgo IMPLEMENTATION.
   rv_valid = abap_true.
 
     ENDMETHOD.
+
+    METHOD validate_delete_order.
+
+  DATA lt_work_order TYPE STANDARD TABLE OF ztwork_order_lgo.
+  DATA lt_history     TYPE STANDARD TABLE OF ztwork_hist_lgo.
+
+  SELECT * FROM ztwork_order_lgo
+    WHERE work_order_id = @iv_work_order_id
+    INTO TABLE @lt_work_order.
+
+  SELECT * FROM ztwork_hist_lgo
+    WHERE work_order_id = @iv_work_order_id
+    INTO TABLE @lt_history.
+
+  IF NOT line_exists( lt_work_order[ work_order_id = iv_work_order_id ] )
+   OR lt_work_order[ work_order_id = iv_work_order_id ]-status <> 'PE'.
+  RAISE EXCEPTION TYPE zcx_validation_lgo
+    EXPORTING
+      textid = zcx_validation_lgo=>work_order_not_found.
+ELSEIF lt_history IS NOT INITIAL.
+  RAISE EXCEPTION TYPE zcx_validation_lgo
+    EXPORTING
+      textid = zcx_validation_lgo=>work_order_already_processed.
+ENDIF.
+
+  rv_valid = abap_true.
+
+ENDMETHOD.
 
 ENDCLASS.

@@ -44,6 +44,12 @@
      <MSGNR>006</MSGNR>
      <TEXT>Invalid Status for update</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCX_MSG_LGO</ARBGB>
+     <MSGNR>007</MSGNR>
+     <TEXT>Work Order already processed</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>

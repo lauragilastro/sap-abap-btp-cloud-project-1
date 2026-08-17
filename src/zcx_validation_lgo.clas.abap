@@ -69,6 +69,16 @@ CLASS zcx_validation_lgo DEFINITION
         attr4 TYPE scx_attrname VALUE '',
       END OF invalid_status_for_update.
 
+      CONSTANTS:
+      BEGIN OF work_order_already_processed,
+        msgid TYPE symsgid VALUE 'ZCX_MSG_LGO',
+        msgno TYPE symsgno VALUE '007',
+        attr1 TYPE scx_attrname VALUE '',
+        attr2 TYPE scx_attrname VALUE '',
+        attr3 TYPE scx_attrname VALUE '',
+        attr4 TYPE scx_attrname VALUE '',
+      END OF work_order_already_processed.
+
     METHODS constructor
       IMPORTING
         !textid   LIKE if_t100_message=>t100key OPTIONAL
