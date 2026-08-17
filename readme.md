@@ -40,7 +40,7 @@ I created an authorization object with the field ACTVT and its 4 allowed activit
 This allows control over the operations a user can perform on work orders, depending on the role assigned to them.
 
 ## Step 6: Validation Class
-We need a validation class to make sure that everything is okay before CRUD class works.
+We need a validation class to make sure everything is okay before CRUD class works.
 If validations are false or make errors, I created an exception class (ZCX_VALIDATION_LGO) with my own message class (ZCX_MSG_LGO) with personalized messages:
 001 Customer does not exist.
 002 Technician does not exist.
@@ -48,8 +48,17 @@ If validations are false or make errors, I created an exception class (ZCX_VALID
 004 Status not valid.
 
 ### 6.1. validate_create_order:
-We need a validation method to make sure customers and technicians exist.
+We need a validation method to make sure customers and technicians exist. The method used SELECT IF/ELSE to confirm it.
 Also validates priority and status calling validate_status_and_priority.
+
+### 6.2 validate_update_order:
+We need a validation method to make sure a work order can be updated only if it exists in the DB table and its status = PE.
+The method used SELECT first to prove the row exists (otherwise = work order not found) and IF/ELSEIF to rule out non-pending (non-PE) rows. No ELSE needed because it can only fail in two ways.
+
+### 6.3 validate_delete_order:
+If the customer wants to delete an order, the order can only be deleted under these conditions: work order exists and it's still PE and it is not updated in the history, otherwise if it's updated it means that it was processed by the technician.
+IF was used to prove again that work order exists or if it's non-pending (non-PE) (2 conditions) = work order not found.
+And if the system detects a non-empty history table, system shows message: work order is already processed.
 
 ### 6.4. validate_status_and_priority:
 Also, we need a validation method for priority (A/B anyways) and status (only PE at the beginning).
