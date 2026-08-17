@@ -38,3 +38,18 @@ Table type needed for the future methods.
 ## Step 5: Authorization Object
 I created an authorization object with the field ACTVT and its 4 allowed activities: 01 Create, 02 Change, 03 Display, 06 Delete.
 This allows control over the operations a user can perform on work orders, depending on the role assigned to them.
+
+## Step 6: Validation Class
+We need a validation class to make sure that everything is okay before CRUD class works.
+If validations are false or make errors, I created an exception class (ZCX_VALIDATION_LGO) with my own message class (ZCX_MSG_LGO) with personalized messages:
+001 Customer does not exist.
+002 Technician does not exist.
+003 Priority not valid.
+004 Status not valid.
+
+### 6.1. validate_create_order:
+We need a validation method to make sure customers and technicians exist.
+Also validates priority and status calling validate_status_and_priority.
+
+### 6.4. validate_status_and_priority:
+Also, we need a validation method for priority (A/B anyways) and status (only PE at the beginning).
