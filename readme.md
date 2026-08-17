@@ -15,8 +15,6 @@ In this project I'm going to develop an ABAP Cloud module built to handle work o
 - ZD_TECHNICIAN_ID_LGO
 - ZD_WORK_ORDER_ID_LGO
 
-I created them in 18 minutes while I was learning Eclipse interface.
-
 ## Step 2: Data Elements
 I created 5 data elements:
 - ZDE_CUSTOMER_ID_LGO
@@ -24,8 +22,6 @@ I created 5 data elements:
 - ZDE_STATUS_LGO
 - ZDE_TECHNICIAN_ID_LGO
 - ZDE_WORK_ORDER_ID_LGO
-
-I created them in 26 minutes, also learning about the Eclipse interface.
 
 ## Step 3: Transparent Tables
 Also I created the 4 transparent tables:
@@ -35,7 +31,10 @@ Also I created the 4 transparent tables:
 - ZTWORK_ORDER_LGO
 
 Two of them need foreign keys because customer_id and technician_id in the work order can only point to a customer or technician that exists in the corresponding table. In other words: only for registered IDs.
-I created them in 15 minutes approximately.
 
 ## Step 4: Table Type
 Table type needed for the future methods.
+
+## Step 5: Authorization Object
+I created an authorization object with the field ACTVT and its 4 allowed activities: 01 Create, 02 Change, 03 Display, 06 Delete.
+This allows control over the operations a user can perform on work orders, depending on the role assigned to them.
