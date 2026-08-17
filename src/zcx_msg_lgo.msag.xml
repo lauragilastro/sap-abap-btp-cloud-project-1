@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>ZCX_MSG_LGO</ARBGB>
+    <MASTERLANG>E</MASTERLANG>
+    <STEXT>Message Class for my validations</STEXT>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCX_MSG_LGO</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>Customer does not exist</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCX_MSG_LGO</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>Technician does not exist</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCX_MSG_LGO</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>Priority not valid</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCX_MSG_LGO</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>Status not valid</TEXT>
+    </T100>
+   </T100>
+  </asx:values>
+ </asx:abap>
+</abapGit>
