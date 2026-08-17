@@ -32,6 +32,18 @@
      <MSGNR>004</MSGNR>
      <TEXT>Status not valid</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCX_MSG_LGO</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>Work Order not found</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCX_MSG_LGO</ARBGB>
+     <MSGNR>006</MSGNR>
+     <TEXT>Invalid Status for update</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>

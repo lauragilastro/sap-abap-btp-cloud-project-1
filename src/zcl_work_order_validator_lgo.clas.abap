@@ -39,11 +39,14 @@ CLASS zcl_work_order_validator_lgo DEFINITION
       RETURNING VALUE(rv_valid) TYPE abap_bool
       RAISING   zcx_validation_lgo.
 
+    METHODS validate_update_order
+        IMPORTING iv_work_order_id TYPE zde_work_order_id_lgo
+        RETURNING VALUE(rv_valid)  TYPE abap_bool
+        RAISING   zcx_validation_lgo.
+
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
-
-
 
 CLASS zcl_work_order_validator_lgo IMPLEMENTATION.
 
@@ -114,5 +117,27 @@ CLASS zcl_work_order_validator_lgo IMPLEMENTATION.
     validate_priority( iv_priority ).
     rv_valid = abap_true.
   ENDMETHOD.
+
+  METHOD validate_update_order.
+
+  DATA lt_work_order TYPE STANDARD TABLE OF ztwork_order_lgo.
+
+  SELECT * FROM ztwork_order_lgo
+    WHERE work_order_id = @iv_work_order_id
+    INTO TABLE @lt_work_order.
+
+  IF NOT line_exists( lt_work_order[ work_order_id = iv_work_order_id ] ).
+    RAISE EXCEPTION TYPE zcx_validation_lgo
+      EXPORTING
+        textid = zcx_validation_lgo=>work_order_not_found.
+  ELSEIF lt_work_order[ work_order_id = iv_work_order_id ]-status <> 'PE'.
+    RAISE EXCEPTION TYPE zcx_validation_lgo
+      EXPORTING
+        textid = zcx_validation_lgo=>invalid_status_for_update.
+  ENDIF.
+
+  rv_valid = abap_true.
+
+    ENDMETHOD.
 
 ENDCLASS.
