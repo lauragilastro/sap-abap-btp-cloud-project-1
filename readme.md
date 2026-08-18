@@ -62,3 +62,20 @@ And if the system detects a non-empty history table, system shows message: work 
 
 ### 6.4. validate_status_and_priority:
 Also, we need a validation method for priority (A/B anyways) and status (only PE at the beginning).
+
+## Step 7: CRUD class:
+CRUD class is the program's actual motor. This class is divided into two methods:
+
+### 7.1 method 1: create_work_order:
+1. Before the work order's creation, the method uses the other class (previously created in step 6) zcl_work_order_validator_lgo to validate if everything we need to proceed exists, so if rv_valid = abap_true we can continue.
+2. The method always catches the same text-error messages as the validator class shows in case of any error.
+3. After the validation checks everything OK, the method inserts a new work order row in the work order table, forcing status PE.
+
+*Technician makes the work*
+
+### 7.2 method 2: update_work_order:
+1. The method validates again same way as previous method to make sure everything is OK before proceeding.
+2. The method updates work order table changing status from PE to CO.
+3. Finally, the method inserts the updated work order in the history, filling the other fields: history_id value is generated taking the last history_id + 1 and for the date, the system captures the current system date using the standard system class: cl_abap_context_info=>get_system_date( ).
+   
+Note: I prefer to use VALUE #( instead create a variable, fill line by line and at last make the INSERT. It's the shortest and cleanest way for me.
