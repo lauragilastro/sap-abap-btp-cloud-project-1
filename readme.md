@@ -4,7 +4,7 @@ In this project I'm going to develop an ABAP Cloud module built to handle work o
 ## Tools
 - Eclipse.
 - BTP trial.
-- My own notes from the master's program manual.
+- My own notes from the Logali master's program manual.
 - Claude Pro.
 
 ## Step 1: Domains
