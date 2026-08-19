@@ -3,16 +3,15 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <DD40V>
-    <TYPENAME>ZTT_WORK_ORD_LGO</TYPENAME>
+    <TYPENAME>ZTT_WORK_HIST_LGO</TYPENAME>
     <DDLANGUAGE>E</DDLANGUAGE>
-    <ROWTYPE>ZTWORK_ORDER_LGO</ROWTYPE>
+    <ROWTYPE>ZTWORK_HIST_LGO</ROWTYPE>
     <ROWKIND>S</ROWKIND>
     <DATATYPE>STRU</DATATYPE>
     <ACCESSMODE>T</ACCESSMODE>
-    <KEYDEF>E</KEYDEF>
-    <KEYKIND>G</KEYKIND>
-    <GENERIC>X</GENERIC>
-    <DDTEXT>Table type for work orders</DDTEXT>
+    <KEYDEF>D</KEYDEF>
+    <KEYKIND>N</KEYKIND>
+    <DDTEXT>Table Type for read Work Order History method</DDTEXT>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD40V>
   </asx:values>

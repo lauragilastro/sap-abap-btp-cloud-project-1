@@ -23,6 +23,10 @@ CLASS zcl_work_ord_crud_handler_lgo DEFINITION
   IMPORTING iv_work_order_id TYPE zde_work_order_id_lgo
   RETURNING VALUE(rs_work_order) TYPE ztwork_order_lgo.
 
+  METHODS read_history
+  IMPORTING iv_work_order_id TYPE zde_work_order_id_lgo
+  RETURNING VALUE(rt_history) TYPE ztt_work_hist_lgo.
+
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -140,6 +144,13 @@ ENDMETHOD.
         FIELDS *
         WHERE work_order_id = @iv_work_order_id
         INTO @rs_work_order.
+    ENDMETHOD.
+
+    METHOD read_history.
+        SELECT FROM ztwork_hist_lgo
+        FIELDS *
+        WHERE work_order_id = @iv_work_order_id
+        INTO TABLE @rt_history.
     ENDMETHOD.
 
 ENDCLASS.
