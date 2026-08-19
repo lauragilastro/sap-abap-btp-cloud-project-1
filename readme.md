@@ -79,3 +79,14 @@ CRUD class is the program's actual motor. This class is divided into two methods
 3. Finally, the method inserts the updated work order in the history, filling the other fields: history_id value is generated taking the last history_id + 1 and for the date, the system captures the current system date using the standard system class: cl_abap_context_info=>get_system_date( ).
    
 Note: I prefer to use VALUE #( instead create a variable, fill line by line and at last make the INSERT. It's the shortest and cleanest way for me.
+
+### 7.3 method 3: delete_work_order:
+The method calls validate_delete_order inside a TRY/CATCH block. If the validator raises an exception (order doesn't exist, isn't in PE status, or already has history), the error message is caught and returned. Otherwise, the row is deleted.
+
+### 7.4 method 4: read_work_order:
+If someone wants to read the work order's table, they only need to enter the work order ID and system shows all table's fields (FIELDS *).
+At the beginning I considered making 4 read methods (one per table), but I decided not to, because the customer and technician tables contain personal data that shouldn't be exposed.
+
+### 7.5 method 5: read_history
+I decided to add this on my own initiative, to check lastest updates. I think that this is necessary.
+For this method I needed to create a table type, because RETURNING only brings one row, to bring more rows it needs a dictionary table type, so this is the result in DEFINITION: RETURNING VALUE(rt_history) TYPE ztt_work_hist_lgo.
