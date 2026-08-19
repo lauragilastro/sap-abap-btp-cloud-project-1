@@ -15,6 +15,14 @@ CLASS zcl_work_ord_crud_handler_lgo DEFINITION
   IMPORTING iv_work_order_id TYPE zde_work_order_id_lgo
   RETURNING VALUE(rv_result) TYPE string.
 
+  METHODS delete_work_order
+  IMPORTING iv_work_order_id TYPE zde_work_order_id_lgo
+  RETURNING VALUE(rv_result) TYPE string.
+
+  METHODS read_work_order
+  IMPORTING iv_work_order_id TYPE zde_work_order_id_lgo
+  RETURNING VALUE(rs_work_order) TYPE ztwork_order_lgo.
+
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -100,5 +108,38 @@ METHOD update_work_order.
   ENDIF.
 
 ENDMETHOD.
+
+METHOD delete_work_order.
+
+  DATA(lo_validator) = NEW zcl_work_order_validator_lgo( ).
+
+  TRY.
+      DATA(lv_valid) = lo_validator->validate_delete_order( iv_work_order_id = iv_work_order_id ).
+    CATCH zcx_validation_lgo INTO DATA(lx_error).
+      rv_result = lx_error->get_text( ).
+      RETURN.
+  ENDTRY.
+
+  IF lv_valid = abap_true.
+
+    DELETE FROM ztwork_order_lgo
+      WHERE work_order_id = @iv_work_order_id.
+
+    IF sy-subrc = 0.
+      rv_result = |Work order { iv_work_order_id } deleted|.
+    ELSE.
+      rv_result = 'Error deleting work order'.
+    ENDIF.
+
+  ENDIF.
+
+ENDMETHOD.
+
+    METHOD read_work_order.
+        SELECT SINGLE FROM ztwork_order_lgo
+        FIELDS *
+        WHERE work_order_id = @iv_work_order_id
+        INTO @rs_work_order.
+    ENDMETHOD.
 
 ENDCLASS.
