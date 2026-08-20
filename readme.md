@@ -63,30 +63,101 @@ And if the system detects a non-empty history table, system shows message: work 
 ### 6.4. validate_status_and_priority:
 Also, we need a validation method for priority (A/B anyways) and status (only PE at the beginning).
 
-## Step 7: CRUD class:
+## Step 7: CRUD Class:
 CRUD class is the program's actual motor. This class is divided into two methods:
 
-### 7.1 method 1: create_work_order:
+### 7.1 Method 1: create_work_order:
 1. Before the work order's creation, the method uses the other class (previously created in step 6) zcl_work_order_validator_lgo to validate if everything we need to proceed exists, so if rv_valid = abap_true we can continue.
 2. The method always catches the same text-error messages as the validator class shows in case of any error.
 3. After the validation checks everything OK, the method inserts a new work order row in the work order table, forcing status PE.
 
 *Technician makes the work*
 
-### 7.2 method 2: update_work_order:
+### 7.2 Method 2: update_work_order:
 1. The method validates again same way as previous method to make sure everything is OK before proceeding.
 2. The method updates work order table changing status from PE to CO.
 3. Finally, the method inserts the updated work order in the history, filling the other fields: history_id value is generated taking the last history_id + 1 and for the date, the system captures the current system date using the standard system class: cl_abap_context_info=>get_system_date( ).
    
 Note: I prefer to use VALUE #( instead create a variable, fill line by line and at last make the INSERT. It's the shortest and cleanest way for me.
 
-### 7.3 method 3: delete_work_order:
+### 7.3 Method 3: delete_work_order:
 The method calls validate_delete_order inside a TRY/CATCH block. If the validator raises an exception (order doesn't exist, isn't in PE status, or already has history), the error message is caught and returned. Otherwise, the row is deleted.
 
-### 7.4 method 4: read_work_order:
+### 7.4 Method 4: read_work_order:
 If someone wants to read the work order's table, they only need to enter the work order ID and system shows all table's fields (FIELDS *).
 At the beginning I considered making 4 read methods (one per table), but I decided not to, because the customer and technician tables contain personal data that shouldn't be exposed.
 
-### 7.5 method 5: read_history
+### 7.5 Method 5: read_history
 I decided to add this on my own initiative, to check lastest updates. I think that this is necessary.
 For this method I needed to create a table type, because RETURNING only brings one row, to bring more rows it needs a dictionary table type, so this is the result in DEFINITION: RETURNING VALUE(rt_history) TYPE ztt_work_hist_lgo.
+
+## Step 8: Test Class
+Inside CRUD class I created a test class to challenge it. I made two types of test: happy end test and error end test:
+" Happy end
+    create_work_order_test_ok FOR TESTING,
+    update_work_order_test_ok FOR TESTING,
+    delete_work_order_test_ok FOR TESTING,
+    read_work_order_test_ok FOR TESTING,
+    read_history_test_ok FOR TESTING,
+
+    " Error end
+    create_work_order_test_error FOR TESTING,
+    update1_work_order_test_error FOR TESTING,
+    update2_work_order_test_error FOR TESTING,
+    delete_work_order_test_error FOR TESTING,
+    read_work_order_test_error FOR TESTING,
+    read_history_test_error FOR TESTING.
+
+But before I created variable cut referring to the CRUD class: zcl_work_ord_crud_handler_lgo and using setup to make it object before starting each method.
+I created fictional data for customer and technician to start:
+INSERT ztcustomer_lgo FROM @( VALUE #(
+          client      = sy-mandt
+          customer_id = '12345678'
+          name        = 'Laura'
+          address     = 'Calle Falsa 123'
+          phone       = '600000000' ) ).
+
+        INSERT zttechnician_lgo FROM @( VALUE #(
+          client        = sy-mandt
+          technician_id = '87654321'
+          name          = 'Norberto'
+          specialty     = 'Electricidad' ) ).
+    ENDMETHOD.
+
+### HAPPY END SECTION:
+### Method: create_work_order_test_ok:
+This method only confirms that data exists.
+
+### Method: update_work_order_test_ok:
+This method also creates data, later updates it and confirms it's ok.
+
+### Method: delete_work_order_test_ok:
+This method creates data and deletes it directly, without updating it first, so it stays in PE and deletion succeeds.
+
+### Method: read_work_order_test_ok:
+This method confirms data exists to read.
+
+### Method: read_history_test_ok:
+This method creates data, updates it to make history, and confirms it can be read because exists.
+
+### ERROR END SECTION:
+### Method: create_work_order_test_error:
+This method creates a wrong customer ID on purpose to prove work order cannot be created.
+
+### Method: update1_work_order_test_error:
+Two update tests are needed because I need to prove two conditions.
+This method manages the possibility of no-existence of any data.
+If data doesn't exist, it cannot be updated.
+
+### Method update2_work_order_test_error:
+Data exists, but it's already processed (status = CO).
+So, first method creates correct data, after this, updates it to transforms from PE to CO, and updates again to manage a processed (CO) work order: it cannot be updated because it's already processed (CO).
+
+### Method: delete_work_order_test_error:
+It's the same way as previous method but adding one more step: after the updating, work order turns CO (is already processed) so it cannot be deleted, because this represents the situation where technician is doing the work or maybe he already finished it, so user can't delete it. Test will show the error message.
+
+### Method: read_work_order_test_error:
+This method tries to read a never-created data.
+
+### Method: read_history_test_error:
+The same as the previous method.
