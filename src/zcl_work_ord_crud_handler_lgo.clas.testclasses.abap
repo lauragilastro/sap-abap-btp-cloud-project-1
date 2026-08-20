@@ -234,7 +234,7 @@ CLASS ltcl_CRUD_test IMPLEMENTATION.
 
     METHOD read_work_order_test_error.
 
-    DATA(lv_resultado) = cut->read_work_order( iv_work_order_id = '00000000' ). " Tries to update a never-created data
+    DATA(lv_resultado) = cut->read_work_order( iv_work_order_id = '00000000' ). " Tries to read a never-created data
 
     cl_abap_unit_assert=>assert_initial( " Initial because not even text-error-message to show
     act = lv_resultado
@@ -244,7 +244,7 @@ CLASS ltcl_CRUD_test IMPLEMENTATION.
 
     METHOD read_history_test_error.
 
-    DATA(lv_resultado) = cut->read_history( iv_work_order_id = '00000000' ). " Tries to update a never-created data
+    DATA(lv_resultado) = cut->read_history( iv_work_order_id = '00000000' ). " Tries to read a never-created data
 
     cl_abap_unit_assert=>assert_initial(
     act = lv_resultado
