@@ -158,15 +158,15 @@ CLASS zcl_work_order_validator_lgo IMPLEMENTATION.
     WHERE work_order_id = @iv_work_order_id
     INTO TABLE @lt_history.
 
-  IF NOT line_exists( lt_work_order[ work_order_id = iv_work_order_id ] )
-   OR lt_work_order[ work_order_id = iv_work_order_id ]-status <> 'PE'.
+  IF NOT line_exists( lt_work_order[ work_order_id = iv_work_order_id ] ).
   RAISE EXCEPTION TYPE zcx_validation_lgo
-    EXPORTING
-      textid = zcx_validation_lgo=>work_order_not_found.
+    EXPORTING textid = zcx_validation_lgo=>work_order_not_found.
+ELSEIF lt_work_order[ work_order_id = iv_work_order_id ]-status <> 'PE'.
+  RAISE EXCEPTION TYPE zcx_validation_lgo
+    EXPORTING textid = zcx_validation_lgo=>work_order_already_processed.
 ELSEIF lt_history IS NOT INITIAL.
   RAISE EXCEPTION TYPE zcx_validation_lgo
-    EXPORTING
-      textid = zcx_validation_lgo=>work_order_already_processed.
+    EXPORTING textid = zcx_validation_lgo=>work_order_already_processed.
 ENDIF.
 
   rv_valid = abap_true.
