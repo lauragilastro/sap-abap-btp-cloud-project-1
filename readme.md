@@ -161,3 +161,10 @@ This method tries to read a never-created data.
 
 ### Method: read_history_test_error:
 The same as the previous method.
+
+## Step 9: ABAP Unit Test
+After completing the CRUD class and its test class (`LTCL_CRUD_TEST`), all 11 test methods (5 happy end + 6 error end) were executed using Eclipse's ABAP Unit Test runner.
+
+Result: 11/11 tests passed.
+
+Screenshot: ![ABAP Unit Test results](all-ok-project-1.png)
